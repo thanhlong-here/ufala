@@ -1,0 +1,18 @@
+{
+    "sourceFile": "app/Http/Middleware/LinkShort.php",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1642651967965,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1642651967965,
+            "name": "Commit-0",
+            "content": "<?php\n\nnamespace App\\Http\\Middleware;\n\nuse App\\Classes\\Journey;\nuse App\\Models\\Link;\nuse Closure;\nuse Illuminate\\Http\\Request;\nuse Illuminate\\Support\\Facades\\Auth;\n\nclass LinkShort\n{\n    /**\n     * Handle an incoming request.\n     *\n     * @param  \\Illuminate\\Http\\Request  $request\n     * @param  \\Closure  $next\n     * @param  string|null  ...$guards\n     * @return mixed\n     */\n    public function handle(Request $request, Closure $next)\n    {\n        $short = Link::whereShort($request->short)->firstOr(function () {\n            return abort('404');\n        });\n        Journey::change(['ref' => $short]);\n        $request->route()->setParameter('short', $short);\n\n        return $next($request);\n\n      \n    }\n}\n"
+        }
+    ]
+}

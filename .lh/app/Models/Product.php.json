@@ -1,0 +1,18 @@
+{
+    "sourceFile": "app/Models/Product.php",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1643898606197,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1643898606197,
+            "name": "Commit-0",
+            "content": "<?php\n\nnamespace App\\Models;\n\nuse App\\Models\\Post;\nuse Illuminate\\Support\\Str;\n\nclass Product extends Post\n{\n  public function getPriceFormatAttribute()\n  {\n    return number_format($this->price);\n  }\n  public function getPriceDiscountFormatAttribute()\n  {\n    return number_format($this->price);\n  }\n  \n  public function getSummaryAttribute(){\n    return empty($this->description) ? Str::limit(strip_tags($this->content), 240 ) : $this->description;\n  }\n\n  public function supplier()\n  {\n    return  $this->belongsTo(Contact::class);\n  }\n\n  public function recommend()\n  {\n    return static::root()->whereCategoryId($this->category_id)->where('id', '<>', $this->id)->inventory();\n  }\n  public function scopeSearch($query, $search)\n  {\n    if (isset($search->name)) {\n      $query->where('name', 'like', \"%$search->name%\");\n    }\n    if (isset($search->categories)) {\n      $query->whereIn('category_id', $search->categories);\n    }\n    return $query;\n  }\n\n  public function ext()\n  {\n    $ext =  $this->replicate()->fill([\n      'parent_id' => $this->id,\n    ]);\n    return $ext;\n  }\n\n  public function sell()\n  {\n    $sold =  $this->replicate()->fill([\n      'parent_id' => $this->id,\n      'sold_at'   => now(),\n      'prefix'    => 'sold'\n    ]);\n    $sold->save();\n    return $sold;\n    \n  }\n\n\n  public function scopeSold($query)\n  {\n    return  $query->whereNotNull('sold_at');\n  }\n\n  public function scopeInventory($query)\n  {\n    return  $query->whereNull('sold_at');\n  }\n\n  \n}\n"
+        }
+    ]
+}

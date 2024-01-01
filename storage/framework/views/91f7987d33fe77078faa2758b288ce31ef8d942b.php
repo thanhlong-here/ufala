@@ -1,0 +1,1 @@
+components.post.search<?php /**PATH D:\www\ufala\storage\framework\views/1684da09518811702a4a1671e85a81bf6011b923.blade.php ENDPATH**/ ?>

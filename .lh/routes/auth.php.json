@@ -1,0 +1,34 @@
+{
+    "sourceFile": "routes/auth.php",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 4,
+            "patches": [
+                {
+                    "date": 1644981403168,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1644981488553,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -15,8 +15,9 @@\n \n \n Route::middleware(['auth'])->group(function () {\n     Route::get('dropship', 'Auth\\DropshipController@index')->name('dropship.index');\n+    Route::get('dropship', 'Auth\\DropshipController@index')->name('dropship.index');\n     Route::get('dropship/transaction', 'Auth\\DropshipController@transaction')->name('dropship.transaction');\n     Route::get('dropship/camp', 'Auth\\DropshipController@camp')->name('dropship.report.camp');\n     Route::get('dropship/order', 'Auth\\DropshipController@order')->name('dropship.report.order');\n    \n"
+                },
+                {
+                    "date": 1644981499756,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -14,10 +14,10 @@\n Route::get('/login/pass', 'Auth\\LoginController@pass')->name('pass');\n \n \n Route::middleware(['auth'])->group(function () {\n-    Route::get('dropship', 'Auth\\DropshipController@index')->name('dropship.index');\n-    Route::get('dropship', 'Auth\\DropshipController@index')->name('dropship.index');\n+    Route::get('dropship', 'Auth\\DropshipController@index')->name('dropship.dashboard');\n+    Route::get('dropship', 'Auth\\DropshipController@index')->name('dropship.');\n     Route::get('dropship/transaction', 'Auth\\DropshipController@transaction')->name('dropship.transaction');\n     Route::get('dropship/camp', 'Auth\\DropshipController@camp')->name('dropship.report.camp');\n     Route::get('dropship/order', 'Auth\\DropshipController@order')->name('dropship.report.order');\n    \n"
+                },
+                {
+                    "date": 1644981511422,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -15,9 +15,9 @@\n \n \n Route::middleware(['auth'])->group(function () {\n     Route::get('dropship', 'Auth\\DropshipController@index')->name('dropship.dashboard');\n-    Route::get('dropship', 'Auth\\DropshipController@index')->name('dropship.');\n+    Route::get('dropship/products', 'Auth\\DropshipController@index')->name('dropship.index');\n     Route::get('dropship/transaction', 'Auth\\DropshipController@transaction')->name('dropship.transaction');\n     Route::get('dropship/camp', 'Auth\\DropshipController@camp')->name('dropship.report.camp');\n     Route::get('dropship/order', 'Auth\\DropshipController@order')->name('dropship.report.order');\n    \n"
+                },
+                {
+                    "date": 1644981720991,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -14,9 +14,9 @@\n Route::get('/login/pass', 'Auth\\LoginController@pass')->name('pass');\n \n \n Route::middleware(['auth'])->group(function () {\n-    Route::get('dropship', 'Auth\\DropshipController@index')->name('dropship.dashboard');\n+    Route::get('dropship', 'Auth\\DropshipController@dashboard')->name('dropship.dashboard');\n     Route::get('dropship/products', 'Auth\\DropshipController@index')->name('dropship.index');\n     Route::get('dropship/transaction', 'Auth\\DropshipController@transaction')->name('dropship.transaction');\n     Route::get('dropship/camp', 'Auth\\DropshipController@camp')->name('dropship.report.camp');\n     Route::get('dropship/order', 'Auth\\DropshipController@order')->name('dropship.report.order');\n"
+                }
+            ],
+            "date": 1644981403168,
+            "name": "Commit-0",
+            "content": "<?php\n\nuse Illuminate\\Support\\Facades\\Route;\nuse Illuminate\\Support\\Facades\\Auth;\n\nAuth::routes();\n\nRoute::post('/checkemail', 'Auth\\LoginController@checkEmail')->name('checkemail');\n\nRoute::post('/firebase', 'Auth\\LoginController@firebase')->name('login.firebase');\n\nRoute::get('/logout', 'Auth\\LoginController@logout')->name('logout');\n\nRoute::get('/login/pass', 'Auth\\LoginController@pass')->name('pass');\n\n\nRoute::middleware(['auth'])->group(function () {\n    Route::get('dropship', 'Auth\\DropshipController@index')->name('dropship.index');\n    Route::get('dropship/transaction', 'Auth\\DropshipController@transaction')->name('dropship.transaction');\n    Route::get('dropship/camp', 'Auth\\DropshipController@camp')->name('dropship.report.camp');\n    Route::get('dropship/order', 'Auth\\DropshipController@order')->name('dropship.report.order');\n   \n   \n    Route::get('dropship/{dropship}/get', 'Auth\\DropshipController@getLink')->name('dropship.link');\n    Route::get('dropship/{dropship}/share', 'Auth\\DropshipController@share')->name('dropship.sharelink');\n\n    Route::post('dropship/withdraw', 'Auth\\DropshipController@withdraw')->name('dropship.withdraw');\n});\n"
+        }
+    ]
+}

@@ -1,0 +1,1 @@
+components.modal.delete<?php /**PATH D:\www\ufala\storage\framework\views/f24af1b9af6b4f3a9b86d61b91f0350a27017d8c.blade.php ENDPATH**/ ?>

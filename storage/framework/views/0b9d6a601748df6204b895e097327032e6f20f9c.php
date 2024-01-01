@@ -1,0 +1,1 @@
+components.temp<?php /**PATH D:\www\ufala\storage\framework\views/1d05bdf066fba763507e02d3bf0778cb847f807b.blade.php ENDPATH**/ ?>

@@ -1,0 +1,61 @@
+body.vertical-layout.vertical-menu .navbar .navbar-header {
+  width: 368px!important;
+}
+body.vertical-layout.vertical-menu .content,
+body.vertical-layout.vertical-menu .footer {
+  margin-left: 368px;
+}
+
+.tab-categories .active::after{
+    content: '';
+    border: 10px solid transparent;
+    border-bottom-color: transparent;
+    border-bottom-color: #fafafa;
+}
+
+.bg-fa{
+  background-color: #fafafa;
+}
+
+
+.popular{
+  height: 345px;
+  color: #fff;
+  background-repeat: no-repeat;
+  background-position: bottom center;
+}
+.popular .content{
+  bottom: 0;
+  position: absolute;
+}
+.tip{
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  background:#fff;
+}
+.bound{
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+#home-banner{
+  margin-top: 4rem;
+  margin-bottom: 4rem;
+  background-size: contain;
+  background-image: url("../images/home/home-bg.png");
+  background-position: bottom;
+}
+#home-banner .bg{
+  height:38rem;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: bottom right;
+}
+
+.banner-header{
+  position: absolute;
+  bottom: 50%;
+  text-transform: uppercase;
+}
+.search{
+  margin-top:-20%;
+}

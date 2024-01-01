@@ -1,0 +1,22 @@
+{
+    "sourceFile": "database/migrations/backup/2021_11_26_035945_create_trackings_table.php",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 1,
+            "patches": [
+                {
+                    "date": 1644670202223,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1644670312328,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -15,9 +15,9 @@\n     {\n         Schema::create('trackings', function (Blueprint $table) {\n             $table->id();\n             $table->timestamps();\n-            $table->bigInteger('user_id')->nullable();\n+          \n             $table->string('code')->unique();\n             $table->string('ip')->nullable();\n             $table->string('platform')->nullable();\n             $table->string('browser')->nullable();\n"
+                }
+            ],
+            "date": 1644670202223,
+            "name": "Commit-0",
+            "content": "<?php\n\nuse Illuminate\\Database\\Migrations\\Migration;\nuse Illuminate\\Database\\Schema\\Blueprint;\nuse Illuminate\\Support\\Facades\\Schema;\n\nclass CreateTrackingsTable extends Migration\n{\n    /**\n     * Run the migrations.\n     *\n     * @return void\n     */\n    public function up()\n    {\n        Schema::create('trackings', function (Blueprint $table) {\n            $table->id();\n            $table->timestamps();\n            $table->bigInteger('user_id')->nullable();\n            $table->string('code')->unique();\n            $table->string('ip')->nullable();\n            $table->string('platform')->nullable();\n            $table->string('browser')->nullable();\n            $table->string('device')->nullable();\n            $table->string('robot')->nullable();\n        });\n    }\n\n    /**\n     * Reverse the migrations.\n     *\n     * @return void\n     */\n    public function down()\n    {\n        Schema::dropIfExists('trackings');\n    }\n}\n"
+        }
+    ]
+}

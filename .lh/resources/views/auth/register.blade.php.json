@@ -1,0 +1,26 @@
+{
+    "sourceFile": "resources/views/auth/register.blade.php",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 2,
+            "patches": [
+                {
+                    "date": 1642751148693,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1642751171478,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,9 +1,5 @@\n-@auth \n-<script>\n-parent.location.reload();\n-</script>\n-@endauth \n+\n @section('body')\n <x-block class=\"modal-header\">\n   <button type=\"button\" class=\"close close-parent\">\n     <span aria-hidden=\"true\">×</span>\n"
+                },
+                {
+                    "date": 1644673646985,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -68,5 +68,5 @@\n \n $('#widget iframe', window.parent.document).height(564);\n </script>\n @endpush\n-<x-layout.simple class=\"bg-white\" />\n\\ No newline at end of file\n+<x-layout.app />\n\\ No newline at end of file\n"
+                }
+            ],
+            "date": 1642751148693,
+            "name": "Commit-0",
+            "content": "@auth \n<script>\nparent.location.reload();\n</script>\n@endauth \n@section('body')\n<x-block class=\"modal-header\">\n  <button type=\"button\" class=\"close close-parent\">\n    <span aria-hidden=\"true\">×</span>\n  </button>\n  <h4 class=\"modal-title text-xs-center\">\n    {{ __('Đăng ký') }}\n  </h4>\n</x-block>\n<x-block class=\"modal-body\">\n  <div class=\"container\">\n    <div class=\"content-header\">\n      <div class=\"card\">\n        <div class=\"card-block\">\n          <div class=\"card-body\">\n            <x-form action=\"{{route('register')}}\">\n\n              <fieldset class=\"form-group position-relative has-icon-left\">\n                <input type=\"email\" required class=\"form-control round\" name=\"email\" value=\"{{ request('email')}}\" placeholder=\"email\">\n                <div class=\"form-control-position\">\n                  <a href=\"{{route('login')}}\"><i class=\"ft-arrow-left info\"></i></a>\n                </div>\n\n              </fieldset>\n              <div class=\"form-group\">\n                <label for=\"name\"> {{__('Họ tên')}} </label>\n                <input class=\"form-control\" name=\"name\" type=\"text\" required />\n                @error('name')\n\n                <div class=\"alert alert-danger\">{{ $message }}</div>\n                @enderror\n              </div>\n\n              <div class=\"form-group\">\n                <label for=\"password\"> {{__('Mật khẩu')}} </label>\n                <input class=\"form-control\" name=\"password\" type=\"password\" required />\n              </div>\n\n              <div class=\"form-group\">\n                <label for=\"password\"> {{__('Xác nhận mật khẩu')}} </label>\n                <input class=\"form-control\" name=\"password_confirmation\" required type=\"password\" />\n                @error('password_confirmation')\n\n                <div class=\"alert alert-danger\">{{ $message }}</div>\n                @enderror\n              </div>\n\n              <div class=\"form-group\">\n                <button type=\"submit\" class=\"btn btn-primary block\">\n                  {{ __('Gửi thông tin') }}\n                </button>\n              </div>\n            </x-form>\n          </div>\n        </div>\n      </div>\n\n    </div>\n\n  </div>\n  </div>\n</x-block>\n\n@endsection\n@push('script')\n<script>\n\n$('#widget iframe', window.parent.document).height(564);\n</script>\n@endpush\n<x-layout.simple class=\"bg-white\" />"
+        }
+    ]
+}

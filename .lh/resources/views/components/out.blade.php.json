@@ -1,0 +1,18 @@
+{
+    "sourceFile": "resources/views/components/out.blade.php",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1642987168085,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1642987168085,
+            "name": "Commit-0",
+            "content": "@php\nglobal $x_item;\n\n@endphp\n@if($x_item)\n<script>\n  $.each(@json($x_item), function(key, value) {\n    $('[xitem-id=' + key + ']').html(value);\n  });\n\n\n  $('.lazy').each(function(i) {\n    var $this = $('.lazy').eq(i);\n    $this.html($this.data('value'));\n\n    var bg = $this.data('bg-img');\n    if (typeof bg != 'undefined') {\n      $this.css('background-image', 'url(' + bg + ')');\n    }\n\n  });\n\n</script>\n@endif"
+        }
+    ]
+}

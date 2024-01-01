@@ -1,0 +1,18 @@
+{
+    "sourceFile": "app/Models/Media.php",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1642476120549,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1642476120549,
+            "name": "Commit-0",
+            "content": "<?php\n\nnamespace App\\Models;\n\nuse Illuminate\\Database\\Eloquent\\Factories\\HasFactory;\nuse Illuminate\\Database\\Eloquent\\Model;\nuse Illuminate\\Support\\Facades\\Storage;\nuse App\\Traits\\Belong;\n\nclass Media extends Model\n{\n    use HasFactory, Belong;\n    protected $guarded = ['id'];\n\n    static function disk()\n    {\n        return Storage::disk('media');\n    }\n\n    public function change($media)\n    {\n        $name =  uniqid() . '.' . $media->getClientOriginalExtension();\n        $path =  $media->storeAs('media', $name);\n        if ($path) {\n            static::disk()->delete($this->name);\n            $this->update([\n                'name'  => $name,\n                'path'  => $path\n            ]);\n        }\n    }\n\n    public static function up($media, $model = null, $prefix = null)\n    {\n        $name =  uniqid() . '.' . $media->getClientOriginalExtension();\n        $path =  $media->storeAs('media', $name);\n        if ($path) {\n            $data    =  [\n                'name'         =>  $name,\n                'path'         =>  $path,\n                'prefix'       =>  $prefix,\n            ];\n            if($model){\n                $data =  array_merge($data,[\n                    'belong_type'  =>  get_class($model),\n                    'belong_id'    =>  $model->id,\n                ]);\n            }\n            return static::create($data);\n        }\n    }\n\n    static function boot()\n    {\n        parent::boot();\n        static::deleting(function ($model) {\n            static::disk()->delete($model->name);\n        });\n    }\n}\n"
+        }
+    ]
+}

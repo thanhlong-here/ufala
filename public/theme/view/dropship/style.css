@@ -1,0 +1,49 @@
+  .screen-block {
+    height: calc(100vh - 8rem);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .nav-jump{
+    position:absolute;
+    bottom: 8rem;
+    right: -4rem;
+  }
+
+
+  .up .action {
+    min-height: 420px;
+    border: .8px dotted #e2e8f0;
+    padding: 2rem;
+    border-radius: 2rem;
+    display: flex;
+    align-items: flex-end;
+    flex-wrap: wrap;
+  }
+
+  .up .thumb {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .up .item {
+    margin: 1rem;
+  }
+
+  .up .item .img-thumb {
+    max-width: 120px;
+    max-height: 320px;
+    border-radius: 1rem;
+    border: .8px dotted #e2e8f0;
+  }
+
+  .up .item .remove {
+    position: absolute;
+    margin: 0 -2rem;
+  }
+
+  .nav-item .to {
+    font-weight: bold;
+  }

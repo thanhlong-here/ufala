@@ -1,0 +1,258 @@
+{
+    "sourceFile": "app/Http/Controllers/Auth/RegisterController.php",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 60,
+            "patches": [
+                {
+                    "date": 1642750406860,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1642750597962,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -74,8 +74,9 @@\n     }\n \n     protected function redirectTo()\n     {\n+        dd(auth()->user());\n         if( url()->previous() == route('register')){\n             return redirect()->route('auth.home');\n           }\n         return back();\n"
+                },
+                {
+                    "date": 1642750642310,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -74,11 +74,7 @@\n     }\n \n     protected function redirectTo()\n     {\n-        dd(auth()->user());\n-        if( url()->previous() == route('register')){\n-            return redirect()->route('auth.home');\n-          }\n-        return back();\n+        return redirect()->route('auth.home');\n     }\n }\n"
+                },
+                {
+                    "date": 1642750735988,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -74,7 +74,7 @@\n     }\n \n     protected function redirectTo()\n     {\n-        return redirect()->route('auth.home');\n+        return redirect()->route('pass');\n     }\n }\n"
+                },
+                {
+                    "date": 1642750798934,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -74,7 +74,7 @@\n     }\n \n     protected function redirectTo()\n     {\n-        return redirect()->route('pass');\n+        return redirect()->route('home');\n     }\n }\n"
+                },
+                {
+                    "date": 1642750863484,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -72,9 +72,6 @@\n             'password' => Hash::make($data['password']),\n         ]);\n     }\n \n-    protected function redirectTo()\n-    {\n-        return redirect()->route('home');\n-    }\n+   \n }\n"
+                },
+                {
+                    "date": 1642750985120,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -72,6 +72,9 @@\n             'password' => Hash::make($data['password']),\n         ]);\n     }\n \n-   \n+    protected function redirectTo()\n+    {\n+        return redirect()->route('home');\n+    }\n }\n"
+                },
+                {
+                    "date": 1642751521671,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -72,9 +72,5 @@\n             'password' => Hash::make($data['password']),\n         ]);\n     }\n \n-    protected function redirectTo()\n-    {\n-        return redirect()->route('home');\n-    }\n }\n"
+                },
+                {
+                    "date": 1642751602050,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -72,5 +72,9 @@\n             'password' => Hash::make($data['password']),\n         ]);\n     }\n \n+    protected function redirectTo()\n+    {\n+        return view('auth.pass');\n+    }\n }\n"
+                },
+                {
+                    "date": 1642751682209,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -72,9 +72,18 @@\n             'password' => Hash::make($data['password']),\n         ]);\n     }\n \n-    protected function redirectTo()\n+  \n+\n+    protected function authenticated(Request $request, $user)\n     {\n+        $user->update(['login_at' => now()]);\n+       \n+        if ($request->_redirect)\n+            return redirect($request->_redirect)->with([\n+                'status' => 'success', 'message' => __('Đăng nhập thành công')\n+            ]);\n+      \n         return view('auth.pass');\n     }\n }\n"
+                },
+                {
+                    "date": 1642751710687,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,8 +5,9 @@\n use App\\Http\\Controllers\\Controller;\n use App\\Providers\\RouteServiceProvider;\n use App\\Models\\User;\n use Illuminate\\Foundation\\Auth\\RegistersUsers;\n+use Illuminate\\Http\\Request;\n use Illuminate\\Support\\Facades\\Hash;\n use Illuminate\\Support\\Facades\\Validator;\n \n class RegisterController extends Controller\n@@ -64,26 +65,26 @@\n      * @return \\App\\Models\\User\n      */\n     protected function create(array $data)\n     {\n-       \n+\n         return User::create([\n             'name' => $data['name'],\n             'email' => $data['email'],\n             'password' => Hash::make($data['password']),\n         ]);\n     }\n \n-  \n \n+\n     protected function authenticated(Request $request, $user)\n     {\n         $user->update(['login_at' => now()]);\n-       \n+\n         if ($request->_redirect)\n             return redirect($request->_redirect)->with([\n                 'status' => 'success', 'message' => __('Đăng nhập thành công')\n             ]);\n-      \n+\n         return view('auth.pass');\n     }\n }\n"
+                },
+                {
+                    "date": 1642751718162,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -77,14 +77,7 @@\n \n \n     protected function authenticated(Request $request, $user)\n     {\n-        $user->update(['login_at' => now()]);\n-\n-        if ($request->_redirect)\n-            return redirect($request->_redirect)->with([\n-                'status' => 'success', 'message' => __('Đăng nhập thành công')\n-            ]);\n-\n-        return view('auth.pass');\n+       dd($user);\n     }\n }\n"
+                },
+                {
+                    "date": 1642751818369,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -73,11 +73,13 @@\n             'password' => Hash::make($data['password']),\n         ]);\n     }\n \n-\n-\n-    protected function authenticated(Request $request, $user)\n+    public function register(Request $request)\n     {\n-       dd($user);\n+        $this->validator($request->all())->validate();\n+  \n+        $this->create($request->all());\n+  \n+        return redirect(\"dashboard\");\n     }\n }\n"
+                },
+                {
+                    "date": 1642751837089,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -76,10 +76,10 @@\n \n     public function register(Request $request)\n     {\n         $this->validator($request->all())->validate();\n-  \n+\n         $this->create($request->all());\n-  \n-        return redirect(\"dashboard\");\n+\n+        return redirect(\"auth.pass\");\n     }\n }\n"
+                },
+                {
+                    "date": 1642751877641,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -79,7 +79,7 @@\n         $this->validator($request->all())->validate();\n \n         $this->create($request->all());\n \n-        return redirect(\"auth.pass\");\n+        return back();\n     }\n }\n"
+                },
+                {
+                    "date": 1642751927884,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -79,7 +79,7 @@\n         $this->validator($request->all())->validate();\n \n         $this->create($request->all());\n \n-        return back();\n+        return redirect(\"home\");\n     }\n }\n"
+                },
+                {
+                    "date": 1642751988572,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -78,8 +78,7 @@\n     {\n         $this->validator($request->all())->validate();\n \n         $this->create($request->all());\n-\n-        return redirect(\"home\");\n+dd($request);\n     }\n }\n"
+                },
+                {
+                    "date": 1642752060604,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -78,7 +78,7 @@\n     {\n         $this->validator($request->all())->validate();\n \n         $this->create($request->all());\n-dd($request);\n+        return view('auth.pass');\n     }\n }\n"
+                },
+                {
+                    "date": 1642752161351,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,9 +5,8 @@\n use App\\Http\\Controllers\\Controller;\n use App\\Providers\\RouteServiceProvider;\n use App\\Models\\User;\n use Illuminate\\Foundation\\Auth\\RegistersUsers;\n-use Illuminate\\Http\\Request;\n use Illuminate\\Support\\Facades\\Hash;\n use Illuminate\\Support\\Facades\\Validator;\n \n class RegisterController extends Controller\n@@ -65,20 +64,17 @@\n      * @return \\App\\Models\\User\n      */\n     protected function create(array $data)\n     {\n-\n+       \n         return User::create([\n             'name' => $data['name'],\n             'email' => $data['email'],\n             'password' => Hash::make($data['password']),\n         ]);\n     }\n \n-    public function register(Request $request)\n+    protected function redirectTo()\n     {\n-        $this->validator($request->all())->validate();\n-\n-        $this->create($request->all());\n-        return view('auth.pass');\n+        return back();\n     }\n }\n"
+                },
+                {
+                    "date": 1642752190058,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -74,7 +74,7 @@\n     }\n \n     protected function redirectTo()\n     {\n-        return back();\n+        return redirect()->route('auth.pass');\n     }\n }\n"
+                },
+                {
+                    "date": 1642752234897,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -74,7 +74,7 @@\n     }\n \n     protected function redirectTo()\n     {\n-        return redirect()->route('auth.pass');\n+        return redirect()->route('pass');\n     }\n }\n"
+                },
+                {
+                    "date": 1642752296406,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -74,7 +74,7 @@\n     }\n \n     protected function redirectTo()\n     {\n-        return redirect()->route('pass');\n+        return route('pass');\n     }\n }\n"
+                },
+                {
+                    "date": 1642752346221,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -74,7 +74,7 @@\n     }\n \n     protected function redirectTo()\n     {\n-        return route('pass');\n+        return 'auth/login/pass';\n     }\n }\n"
+                },
+                {
+                    "date": 1642752418495,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -74,7 +74,7 @@\n     }\n \n     protected function redirectTo()\n     {\n-        return 'auth/login/pass';\n+        dd(auth());\n     }\n }\n"
+                },
+                {
+                    "date": 1642752759651,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -75,6 +75,8 @@\n \n     protected function redirectTo()\n     {\n         dd(auth());\n+\n+        return view('auth.pass');\n     }\n }\n"
+                },
+                {
+                    "date": 1642752834299,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -74,9 +74,7 @@\n     }\n \n     protected function redirectTo()\n     {\n-        dd(auth());\n-\n-        return view('auth.pass');\n+        return redirect( 'auth/login/pass');\n     }\n }\n"
+                },
+                {
+                    "date": 1642753199035,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -74,7 +74,7 @@\n     }\n \n     protected function redirectTo()\n     {\n-        return redirect( 'auth/login/pass');\n+        return 'auth/login/pass';\n     }\n }\n"
+                },
+                {
+                    "date": 1642753528557,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -74,7 +74,7 @@\n     }\n \n     protected function redirectTo()\n     {\n-        return 'auth/login/pass';\n+        return redirect()->route('auth.home');\n     }\n }\n"
+                },
+                {
+                    "date": 1642753602959,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -74,7 +74,7 @@\n     }\n \n     protected function redirectTo()\n     {\n-        return redirect()->route('auth.home');\n+        return redirect()->route('home');\n     }\n }\n"
+                },
+                {
+                    "date": 1642754044983,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -74,7 +74,7 @@\n     }\n \n     protected function redirectTo()\n     {\n-        return redirect()->route('home');\n+        $redirectTo ='auth/';\n     }\n }\n"
+                },
+                {
+                    "date": 1642754061108,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -74,7 +74,7 @@\n     }\n \n     protected function redirectTo()\n     {\n-        $redirectTo ='auth/';\n+        $redirectTo ='/auth/login/pass';\n     }\n }\n"
+                },
+                {
+                    "date": 1642754066453,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -74,7 +74,7 @@\n     }\n \n     protected function redirectTo()\n     {\n-        $redirectTo ='/auth/login/pass';\n+        $this->redirectTo ='/auth/login/pass';\n     }\n }\n"
+                },
+                {
+                    "date": 1642754161057,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -29,9 +29,9 @@\n      * Where to redirect users after registration.\n      *\n      * @var string\n      */\n-    protected $redirectTo = RouteServiceProvider::HOME;\n+    protected $redirectTo = '/auth/login/pass';\n \n     /**\n      * Create a new controller instance.\n      *\n@@ -72,9 +72,6 @@\n             'password' => Hash::make($data['password']),\n         ]);\n     }\n \n-    protected function redirectTo()\n-    {\n-        $this->redirectTo ='/auth/login/pass';\n-    }\n+   \n }\n"
+                },
+                {
+                    "date": 1642754198448,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -29,9 +29,9 @@\n      * Where to redirect users after registration.\n      *\n      * @var string\n      */\n-    protected $redirectTo = '/auth/login/pass';\n+    protected $redirectTo = 'auth/login/pass';\n \n     /**\n      * Create a new controller instance.\n      *\n"
+                },
+                {
+                    "date": 1642754216481,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -64,14 +64,15 @@\n      * @return \\App\\Models\\User\n      */\n     protected function create(array $data)\n     {\n-       \n+       /*\n         return User::create([\n             'name' => $data['name'],\n             'email' => $data['email'],\n             'password' => Hash::make($data['password']),\n         ]);\n+        */\n     }\n \n    \n }\n"
+                },
+                {
+                    "date": 1642754254224,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -64,15 +64,15 @@\n      * @return \\App\\Models\\User\n      */\n     protected function create(array $data)\n     {\n-       /*\n+       \n         return User::create([\n             'name' => $data['name'],\n             'email' => $data['email'],\n             'password' => Hash::make($data['password']),\n         ]);\n-        */\n+        \n     }\n \n    \n }\n"
+                },
+                {
+                    "date": 1642754294333,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -72,7 +72,12 @@\n             'password' => Hash::make($data['password']),\n         ]);\n         \n     }\n-\n+    public function register(Request $request)\n+    {\n+        $this->validator($request->all())->validate();\n+        $this->create($request->all());\n+        return redirect(\"dashboard\");\n+    }\n    \n }\n"
+                },
+                {
+                    "date": 1642754306057,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,8 +5,9 @@\n use App\\Http\\Controllers\\Controller;\n use App\\Providers\\RouteServiceProvider;\n use App\\Models\\User;\n use Illuminate\\Foundation\\Auth\\RegistersUsers;\n+use Illuminate\\Http\\Request;\n use Illuminate\\Support\\Facades\\Hash;\n use Illuminate\\Support\\Facades\\Validator;\n \n class RegisterController extends Controller\n"
+                },
+                {
+                    "date": 1642754347391,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -77,8 +77,8 @@\n     public function register(Request $request)\n     {\n         $this->validator($request->all())->validate();\n         $this->create($request->all());\n-        return redirect(\"dashboard\");\n+        return back();\n     }\n    \n }\n"
+                },
+                {
+                    "date": 1642754382895,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -77,8 +77,8 @@\n     public function register(Request $request)\n     {\n         $this->validator($request->all())->validate();\n         $this->create($request->all());\n-        return back();\n+        return redirect(\"pass\");\n     }\n    \n }\n"
+                },
+                {
+                    "date": 1642754421165,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -77,8 +77,8 @@\n     public function register(Request $request)\n     {\n         $this->validator($request->all())->validate();\n         $this->create($request->all());\n-        return redirect(\"pass\");\n+        return redirect()->route('pass');\n     }\n    \n }\n"
+                },
+                {
+                    "date": 1642754472785,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,9 +5,8 @@\n use App\\Http\\Controllers\\Controller;\n use App\\Providers\\RouteServiceProvider;\n use App\\Models\\User;\n use Illuminate\\Foundation\\Auth\\RegistersUsers;\n-use Illuminate\\Http\\Request;\n use Illuminate\\Support\\Facades\\Hash;\n use Illuminate\\Support\\Facades\\Validator;\n \n class RegisterController extends Controller\n@@ -30,9 +29,9 @@\n      * Where to redirect users after registration.\n      *\n      * @var string\n      */\n-    protected $redirectTo = 'auth/login/pass';\n+    protected $redirectTo = RouteServiceProvider::HOME;\n \n     /**\n      * Create a new controller instance.\n      *\n@@ -71,10 +70,10 @@\n             'name' => $data['name'],\n             'email' => $data['email'],\n             'password' => Hash::make($data['password']),\n         ]);\n-        \n     }\n+\n     public function register(Request $request)\n     {\n         $this->validator($request->all())->validate();\n         $this->create($request->all());\n"
+                },
+                {
+                    "date": 1642754480497,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,8 +5,9 @@\n use App\\Http\\Controllers\\Controller;\n use App\\Providers\\RouteServiceProvider;\n use App\\Models\\User;\n use Illuminate\\Foundation\\Auth\\RegistersUsers;\n+use Illuminate\\Http\\Request;\n use Illuminate\\Support\\Facades\\Hash;\n use Illuminate\\Support\\Facades\\Validator;\n \n class RegisterController extends Controller\n"
+                },
+                {
+                    "date": 1642754522846,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -77,8 +77,8 @@\n     public function register(Request $request)\n     {\n         $this->validator($request->all())->validate();\n         $this->create($request->all());\n-        return redirect()->route('pass');\n+        $this->redirectTo = route('pass');\n     }\n    \n }\n"
+                },
+                {
+                    "date": 1642754562469,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -77,8 +77,8 @@\n     public function register(Request $request)\n     {\n         $this->validator($request->all())->validate();\n         $this->create($request->all());\n-        $this->redirectTo = route('pass');\n+        $this->redirectTo = '/auth/pass';\n     }\n    \n }\n"
+                },
+                {
+                    "date": 1642754577546,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -77,8 +77,8 @@\n     public function register(Request $request)\n     {\n         $this->validator($request->all())->validate();\n         $this->create($request->all());\n-        $this->redirectTo = '/auth/pass';\n+        $this->redirectTo = '/auth/login/pass';\n     }\n    \n }\n"
+                },
+                {
+                    "date": 1642754753174,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -73,12 +73,10 @@\n             'password' => Hash::make($data['password']),\n         ]);\n     }\n \n-    public function register(Request $request)\n+    protected function registered(Request $request, $user)\n     {\n-        $this->validator($request->all())->validate();\n-        $this->create($request->all());\n-        $this->redirectTo = '/auth/login/pass';\n+        //\n     }\n    \n }\n"
+                },
+                {
+                    "date": 1642754759027,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -63,8 +63,9 @@\n      *\n      * @param  array  $data\n      * @return \\App\\Models\\User\n      */\n+    /*\n     protected function create(array $data)\n     {\n        \n         return User::create([\n@@ -72,8 +73,9 @@\n             'email' => $data['email'],\n             'password' => Hash::make($data['password']),\n         ]);\n     }\n+    */\n \n     protected function registered(Request $request, $user)\n     {\n         //\n"
+                },
+                {
+                    "date": 1642754765419,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -77,8 +77,8 @@\n     */\n \n     protected function registered(Request $request, $user)\n     {\n-        //\n+        dd($user);\n     }\n    \n }\n"
+                },
+                {
+                    "date": 1642754787971,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -63,9 +63,9 @@\n      *\n      * @param  array  $data\n      * @return \\App\\Models\\User\n      */\n-    /*\n+    \n     protected function create(array $data)\n     {\n        \n         return User::create([\n@@ -73,9 +73,9 @@\n             'email' => $data['email'],\n             'password' => Hash::make($data['password']),\n         ]);\n     }\n-    */\n+    \n \n     protected function registered(Request $request, $user)\n     {\n         dd($user);\n"
+                },
+                {
+                    "date": 1642755088490,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -77,8 +77,9 @@\n     \n \n     protected function registered(Request $request, $user)\n     {\n+        dd(auth()->user());\n         dd($user);\n     }\n    \n }\n"
+                },
+                {
+                    "date": 1642755129749,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -78,8 +78,8 @@\n \n     protected function registered(Request $request, $user)\n     {\n         dd(auth()->user());\n-        dd($user);\n+        //dd($user);\n     }\n    \n }\n"
+                },
+                {
+                    "date": 1642755138555,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -77,9 +77,9 @@\n     \n \n     protected function registered(Request $request, $user)\n     {\n-        dd(auth()->user());\n+        dd(auth()->id());\n         //dd($user);\n     }\n    \n }\n"
+                },
+                {
+                    "date": 1642755198433,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -77,9 +77,8 @@\n     \n \n     protected function registered(Request $request, $user)\n     {\n-        dd(auth()->id());\n-        //dd($user);\n+        return back();\n     }\n    \n }\n"
+                },
+                {
+                    "date": 1642755251444,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -77,8 +77,8 @@\n     \n \n     protected function registered(Request $request, $user)\n     {\n-        return back();\n+        return redirect()->route('pass');\n     }\n    \n }\n"
+                },
+                {
+                    "date": 1642755330584,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -74,11 +74,21 @@\n             'password' => Hash::make($data['password']),\n         ]);\n     }\n     \n+    public function register(Request $request)\n+    {\n+        $this->validator($request->all())->validate();\n \n-    protected function registered(Request $request, $user)\n-    {\n-        return redirect()->route('pass');\n+        event(new Registered($user = $this->create($request->all())));\n+\n+        $this->guard()->login($user);\n+\n+        if ($response = $this->registered($request, $user)) {\n+            return $response;\n+        }\n+\n+        return $request->wantsJson()\n+                    ? new JsonResponse([], 201)\n+                    : redirect($this->redirectPath());\n     }\n-   \n }\n"
+                },
+                {
+                    "date": 1642755431524,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,8 +5,10 @@\n use App\\Http\\Controllers\\Controller;\n use App\\Providers\\RouteServiceProvider;\n use App\\Models\\User;\n use Illuminate\\Foundation\\Auth\\RegistersUsers;\n+\n+use Illuminate\\Auth\\Events\\Registered;\n use Illuminate\\Http\\Request;\n use Illuminate\\Support\\Facades\\Hash;\n use Illuminate\\Support\\Facades\\Validator;\n \n@@ -63,19 +65,19 @@\n      *\n      * @param  array  $data\n      * @return \\App\\Models\\User\n      */\n-    \n+\n     protected function create(array $data)\n     {\n-       \n+\n         return User::create([\n             'name' => $data['name'],\n             'email' => $data['email'],\n             'password' => Hash::make($data['password']),\n         ]);\n     }\n-    \n+\n     public function register(Request $request)\n     {\n         $this->validator($request->all())->validate();\n \n@@ -87,8 +89,8 @@\n             return $response;\n         }\n \n         return $request->wantsJson()\n-                    ? new JsonResponse([], 201)\n-                    : redirect($this->redirectPath());\n+            ? new JsonResponse([], 201)\n+            : redirect($this->redirectPath());\n     }\n }\n"
+                },
+                {
+                    "date": 1642755457151,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,9 +5,8 @@\n use App\\Http\\Controllers\\Controller;\n use App\\Providers\\RouteServiceProvider;\n use App\\Models\\User;\n use Illuminate\\Foundation\\Auth\\RegistersUsers;\n-\n use Illuminate\\Auth\\Events\\Registered;\n use Illuminate\\Http\\Request;\n use Illuminate\\Support\\Facades\\Hash;\n use Illuminate\\Support\\Facades\\Validator;\n@@ -84,13 +83,7 @@\n         event(new Registered($user = $this->create($request->all())));\n \n         $this->guard()->login($user);\n \n-        if ($response = $this->registered($request, $user)) {\n-            return $response;\n-        }\n-\n-        return $request->wantsJson()\n-            ? new JsonResponse([], 201)\n-            : redirect($this->redirectPath());\n+      return back();\n     }\n }\n"
+                },
+                {
+                    "date": 1642755478195,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,9 +5,8 @@\n use App\\Http\\Controllers\\Controller;\n use App\\Providers\\RouteServiceProvider;\n use App\\Models\\User;\n use Illuminate\\Foundation\\Auth\\RegistersUsers;\n-use Illuminate\\Auth\\Events\\Registered;\n use Illuminate\\Http\\Request;\n use Illuminate\\Support\\Facades\\Hash;\n use Illuminate\\Support\\Facades\\Validator;\n \n@@ -64,26 +63,22 @@\n      *\n      * @param  array  $data\n      * @return \\App\\Models\\User\n      */\n-\n+    \n     protected function create(array $data)\n     {\n-\n+       \n         return User::create([\n             'name' => $data['name'],\n             'email' => $data['email'],\n             'password' => Hash::make($data['password']),\n         ]);\n     }\n+    \n \n-    public function register(Request $request)\n+    protected function registered(Request $request, $user)\n     {\n-        $this->validator($request->all())->validate();\n-\n-        event(new Registered($user = $this->create($request->all())));\n-\n-        $this->guard()->login($user);\n-\n-      return back();\n+        return redirect()->route('pass');\n     }\n+   \n }\n"
+                },
+                {
+                    "date": 1642755489337,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -77,8 +77,9 @@\n     \n \n     protected function registered(Request $request, $user)\n     {\n-        return redirect()->route('pass');\n+         \n+        return view('auth.pass');\n     }\n    \n }\n"
+                },
+                {
+                    "date": 1642755523562,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -63,23 +63,21 @@\n      *\n      * @param  array  $data\n      * @return \\App\\Models\\User\n      */\n-    \n+\n     protected function create(array $data)\n     {\n-       \n+\n         return User::create([\n             'name' => $data['name'],\n             'email' => $data['email'],\n             'password' => Hash::make($data['password']),\n         ]);\n     }\n-    \n \n+\n     protected function registered(Request $request, $user)\n     {\n-         \n         return view('auth.pass');\n     }\n-   \n }\n"
+                }
+            ],
+            "date": 1642750406859,
+            "name": "Commit-0",
+            "content": "<?php\n\nnamespace App\\Http\\Controllers\\Auth;\n\nuse App\\Http\\Controllers\\Controller;\nuse App\\Providers\\RouteServiceProvider;\nuse App\\Models\\User;\nuse Illuminate\\Foundation\\Auth\\RegistersUsers;\nuse Illuminate\\Support\\Facades\\Hash;\nuse Illuminate\\Support\\Facades\\Validator;\n\nclass RegisterController extends Controller\n{\n    /*\n    |--------------------------------------------------------------------------\n    | Register Controller\n    |--------------------------------------------------------------------------\n    |\n    | This controller handles the registration of new users as well as their\n    | validation and creation. By default this controller uses a trait to\n    | provide this functionality without requiring any additional code.\n    |\n    */\n\n    use RegistersUsers;\n\n\n    /**\n     * Where to redirect users after registration.\n     *\n     * @var string\n     */\n    protected $redirectTo = RouteServiceProvider::HOME;\n\n    /**\n     * Create a new controller instance.\n     *\n     * @return void\n     */\n    public function __construct()\n    {\n        $this->middleware('guest');\n    }\n\n    /**\n     * Get a validator for an incoming registration request.\n     *\n     * @param  array  $data\n     * @return \\Illuminate\\Contracts\\Validation\\Validator\n     */\n    protected function validator(array $data)\n    {\n        return Validator::make($data, [\n            'name' => ['required', 'string', 'max:191'],\n            'email' => ['required', 'string', 'email', 'max:191', 'unique:users'],\n            'password' => ['required', 'string', 'min:6', 'confirmed'],\n        ]);\n    }\n\n    /**\n     * Create a new user instance after a valid registration.\n     *\n     * @param  array  $data\n     * @return \\App\\Models\\User\n     */\n    protected function create(array $data)\n    {\n       \n        return User::create([\n            'name' => $data['name'],\n            'email' => $data['email'],\n            'password' => Hash::make($data['password']),\n        ]);\n    }\n\n    protected function redirectTo()\n    {\n        if( url()->previous() == route('register')){\n            return redirect()->route('auth.home');\n          }\n        return back();\n    }\n}\n"
+        }
+    ]
+}

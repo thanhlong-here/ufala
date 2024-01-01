@@ -1,0 +1,22 @@
+{
+    "sourceFile": "app/Models/User.php",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 1,
+            "patches": [
+                {
+                    "date": 1642559801678,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1642559856185,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -79,7 +79,6 @@\n   public function income($total,$note,$prefix = null)\n   {\n     return Transaction::in($this, $total,$note,'closed', $prefix);\n   }\n-\n-\n+   \n }\n"
+                }
+            ],
+            "date": 1642559801678,
+            "name": "Commit-0",
+            "content": "<?php\n\nnamespace App\\Models;\n\nuse Illuminate\\Contracts\\Auth\\MustVerifyEmail;\nuse Illuminate\\Database\\Eloquent\\Factories\\HasFactory;\nuse Illuminate\\Foundation\\Auth\\User as Authenticatable;\nuse Illuminate\\Notifications\\Notifiable;\nuse App\\Traits\\HasParent;\n\n\nclass User extends Authenticatable\n{\n  use HasFactory, Notifiable,HasParent;\n\n  /**\n   * The attributes that are mass assignable.\n   *\n   * @var array\n   */\n  protected $fillable = [\n    'name',\n    'email',\n    'password',\n    'is_admin',\n    'has_role',\n    'login_at',\n    'firebase_id',\n    'firebase_token',\n    'firebase_by',\n  ];\n\n  /**\n   * The attributes that should be hidden for arrays.\n   *\n   * @var array\n   */\n  protected $hidden = [\n    'password',\n    'remember_token',\n  ];\n\n  /**\n   * The attributes that should be cast to native types.\n   *\n   * @var array\n   */\n  protected $casts = [\n    'email_verified_at' => 'datetime',\n  ];\n\n  public function getRoleAttribute()\n  {\n    if ($this->is_admin) {\n      return empty($this->has_role) ? 'admin' :  $this->has_role;\n    }\n    return 'guest';\n  }\n\n  public function transactions()\n  {\n    return $this->hasMany(Transaction::class);\n  }\n\n  public function contact(){\n    return $this->hasOne(Contact::class,'account_id');\n  }\n\n  public function wallet()\n  {\n    return Transaction::total($this);\n  }\n\n  public function withdraw($total,$note = null)\n  {\n    return Transaction::out($this, $total,$note ,'pending-withdraw');\n  }\n\n  public function income($total,$note,$prefix = null)\n  {\n    return Transaction::in($this, $total,$note,'closed', $prefix);\n  }\n\n\n}\n"
+        }
+    ]
+}
